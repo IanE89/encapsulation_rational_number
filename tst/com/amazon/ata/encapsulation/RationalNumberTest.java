@@ -3,8 +3,7 @@ package com.amazon.ata.encapsulation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RationalNumberTest {
 
@@ -57,7 +56,7 @@ public class RationalNumberTest {
 
         //THEN
         assertTrue(Double.compare(oneDecimal, decimalOutput) == 0,
-                   "Expected 1/1 to have decimal value of 1.0");
+                "Expected 1/1 to have decimal value of 1.0");
     }
 
     @Test
@@ -92,7 +91,7 @@ public class RationalNumberTest {
     public void constructor_withZeroDenominator_throwsException() {
         //WHEN & THEN
         Assertions.assertThrows(IllegalArgumentException.class, () -> new RationalNumber(1, 0),
-                                "The constructor should not allow an illegal denominator value of 0.");
+                "The constructor should not allow an illegal denominator value of 0.");
     }
 
     @Test
@@ -101,8 +100,8 @@ public class RationalNumberTest {
         RationalNumber half = new RationalNumber(1, 2);
 
         //WHEN & THEN
-        Assertions.assertThrows(IllegalArgumentException.class, () -> half.denominator = 0, "You should not "
-            + "be able to edit an existing RationalNumber and make it invalid with a 0 value denominator.");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> half.update(1, 0), "You should not "
+                + "be able to edit an existing RationalNumber and make it invalid with a 0 value denominator.");
     }
 
     @Test
@@ -132,4 +131,98 @@ public class RationalNumberTest {
         //THEN
         assertTrue(equal, "1/2 and 2/4 should be equal.");
     }
+
+    @Test
+    public void testGetNumerator() {
+        //GIVEN
+        RationalNumber one = new RationalNumber(1, 2);
+        int expectedNumerator = 1;
+        //WHEN
+        int actualNumerator = one.getNumerator();
+
+        //THEN
+        assertEquals(expectedNumerator, actualNumerator, "Expected numerator to be 1");
+    }
+
+    @Test
+    public void testGetDenominator() {
+        //GIVEN
+        RationalNumber one = new RationalNumber(1, 2);
+        int expectedDenominator = 2;
+        //WHEN
+        int actualDenominator = one.getDenominator();
+
+        //THEN
+        assertEquals(expectedDenominator, actualDenominator, "Expected denominator to be 2");
+    }
+
+    @Test
+    public void testSetNumerator() {
+        //GIVEN
+        RationalNumber one = new RationalNumber(1, 2);
+        int expectedNumerator = 3;
+
+        //WHEN
+        one.setNumerator(3);
+        int actualNumerator = one.getNumerator();
+
+        //THEN
+        assertEquals(expectedNumerator, actualNumerator, "Expected numerator to be set to 3");
+    }
+
+    @Test
+    public void testSetDenominator() {
+        //GIVEN
+        RationalNumber one = new RationalNumber(1, 2);
+        int expectedDenominator = 3;
+
+        //WHEN
+        one.setDenominator(3);
+        int actualDenominator = one.getDenominator();
+
+        //THEN
+        assertEquals(expectedDenominator, actualDenominator, "Expected denominator to be set to 3");
+    }
+
+    @Test
+    public void testUpdate() {
+        //GIVEN
+        RationalNumber one = new RationalNumber(1, 2);
+        int expectedNumerator = 3;
+        int expectedDenominator = 4;
+        //WHEN
+        one.update(3, 4);
+        int actualNumerator = one.getNumerator();
+        int actualDenominator = one.getDenominator();
+
+        //THEN
+        assertEquals(expectedNumerator, actualNumerator, "Expected numerator to be updated to 3");
+        assertEquals(expectedDenominator, actualDenominator, "Expected denominator to be updated to 4");
+    }
+
+    @Test
+    public void testUpdate_withZeroDenominator_throwsException() {
+        //GIVEN
+        RationalNumber one = new RationalNumber(1, 2);
+
+        //WHEN & THEN
+        Assertions.assertThrows(IllegalArgumentException.class, () -> one.update(1, 0), "You" +
+                " should not be able to update a RationalNumber and make it invalid with a 0 value denominator");
+
+    }
+
+    @Test
+    public void constructor_existingRationalNumber_createsCopy() {
+        // GIVEN
+        RationalNumber original = new RationalNumber(3, 4);
+
+        // WHEN
+        RationalNumber copy = new RationalNumber(original);
+
+        // THEN
+        assertEquals(original.getNumerator(), copy.getNumerator());
+        assertEquals(original.getDenominator(), copy.getDenominator());
+        assertNotSame(original, copy);
+    }
+
 }

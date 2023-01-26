@@ -4,10 +4,40 @@ package com.amazon.ata.encapsulation;
  * Represents a rational number, always kept in the most reduced form. By definition a rational number is a number that
  * can be in the form n/d where n and d are integers and d is not equal to zero.
  */
-public class RationalNumber {
+public final class RationalNumber {
 
     public int numerator;
     public int denominator;
+
+    public int getNumerator() {
+        return numerator;
+    }
+
+    public void setNumerator(int numerator) {
+        this.numerator = numerator;
+    }
+
+    public int getDenominator() {
+        return denominator;
+    }
+
+    public void setDenominator(int denominator) {
+        this.denominator = denominator;
+    }
+
+    /**
+     * Ensures that denominator is not 0, then calls reduce() to ensure the number is in reduced form.
+     * @param numerator the numerator to be updated
+     * @param denominator the denominator to be updated
+     */
+    public void update(int numerator, int denominator) {
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Denominator cannot be zero");
+        }
+        this.numerator = numerator;
+        this.denominator = denominator;
+        reduce();
+    }
 
     /**
      * Constructs a new rational number representing 0. Numerator = 0, Denominator = 1.
@@ -15,6 +45,14 @@ public class RationalNumber {
     public RationalNumber() {
         this.numerator = 0;
         this.denominator = 1;
+    }
+
+    /** Copy constructor that makes a copy of the original RationalNumber class.
+     *
+     */
+    public RationalNumber(RationalNumber original) {
+        this.numerator = original.getNumerator();
+        this.denominator = original.getDenominator();
     }
 
     /**
@@ -64,7 +102,7 @@ public class RationalNumber {
         // Cast it as a RationalNumber so we can use its methods and fields
         final RationalNumber other = (RationalNumber) obj;
 
-        return this.denominator == other.denominator && this.numerator == other.numerator;
+        return (double) this.numerator / this.denominator == (double) other.numerator / other.denominator;
     }
 
     /**
